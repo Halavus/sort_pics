@@ -58,6 +58,10 @@ class File:
         self.date = splitname()
 
 
+
+sorted_root_dir = sys.argv[2]
+out = sorted_root_dir
+
 classed_filenames = []
 for i in files:
     try:
@@ -70,14 +74,18 @@ for i in files:
         pass
 
 
-sorted_root_dir = os.path.abspath("./sorted")
-out = sorted_root_dir
-
 if not os.path.isdir(out):
     # checks if the dir exists otherwise create it
     # NOTE REMOVE ON PROD
-    os.mkdir(out)
-
+    
+    user_input = raw_input("The output root directory doesn't exists."
+                            "Continue (Y/n): "
+                            )
+    if user_input == 'Y':
+    #user_input = raw_input("The output root directory doesn\'t exists. Create it? (Y/n): ")
+        os.mkdir(out)
+    else:
+        sys.exit("Aborded")
 
 for i in classed_filenames:
     # first we create the needed dirs
@@ -89,9 +97,14 @@ for i in classed_filenames:
     else:
         if not os.path.isdir(path_month):
             os.mkdir(path_month)
-    # then we hardlink the files in it
-    os.link(i.path, path_file)
+    # then we hardlink the files
+    # pass if file already exists 
+    # NOTE this should be prevented before !!
+    try:
+        os.link(i.path, path_file)
+    except OSError:
+        pass
 
 
-#print 'Debug'
-#print classed_filenames[1].date['month']
+# print 'Debug'
+# print classed_filenames[1].date['month']
