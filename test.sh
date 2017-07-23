@@ -9,6 +9,7 @@ input="$(realpath $1)"
 out_root="$(realpath $2)"
 debug_options="$3"
 
+# not in use...
 if [[ -f "$script_dir/.conf" ]] ; then
     echo "Read the configuration file"
     # define vars here
